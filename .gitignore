@@ -1,0 +1,73 @@
+# git ignore for node modules
+
+node_modules
+ 
+# git ignore for .env file
+
+.env
+
+# git ignore for nextjs
+
+.next
+
+# git ignore for npm 
+
+npm-debug.log*
+
+# git ignore for production build
+
+build
+
+# git ignore for nextjs
+
+out
+
+# git ignore for yarn
+
+yarn-error.log
+
+# git ignore for yarn
+
+yarn.lock
+
+# git ignore for .DS_Store
+
+.DS_Store
+
+# git ignore for .env.local
+
+.env.local
+
+# git ignore for .env.development.local
+
+.env.development.local
+
+# git ignore for .env.test.local
+
+.env.test.local
+
+# git ignore for .env.production.local
+
+.env.production.local
+
+# git ignore for coverage
+
+
+coverage
+
+# git ignore for jest
+
+jest.config.js
+
+# git ignore for nextjs
+
+jest.setup.js
+
+# git ignore for nextjs
+
+jest.client.config.js
+
+# git ignore for nextjs
+
+jest.server.config.js
+
