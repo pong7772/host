@@ -1,16 +1,16 @@
-import React, { useState, use } from "react";
+import React, { useState, use, Suspense, useEffect } from "react";
 import Textinput from "@/components/ui/Textinput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import Checkbox from "@/components/ui/Checkbox";
-import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { handleLogin } from "./store";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
+import Loading from "@/components/Loading";
 
 const schema = yup
   .object({
@@ -24,6 +24,18 @@ const LoginForm = () => {
   const { users } = useSelector((state) => state.auth);
   const [checked, setChecked] = useState(true);
   const [loginError, setLoginError] = useState("");
+  const router = useRouter();
+  useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch('/crm')
+    router.prefetch('/profile')
+    router.prefetch('/feedback')
+    router.prefetch('/department')
+    router.prefetch('/academic')
+    router.prefetch('/user')
+    router.prefetch('/feedback-form')
+    router.prefetch('/feedback/create-feedback')
+  }, [router])
   const {
     register,
     formState: { errors },
@@ -33,7 +45,7 @@ const LoginForm = () => {
     mode: "all",
   });
 
-  const router = useRouter();
+
 
 
   const onSubmit = async (values) => {
@@ -48,7 +60,6 @@ const LoginForm = () => {
         }
       )
       if (user && user.data) {
-        // console.log(user)
         dispatch(handleLogin(user.data))
         toast.success("Login successfully", {
           position: "top-right",
@@ -60,7 +71,7 @@ const LoginForm = () => {
           progress: undefined,
           theme: "light",
         });
-        router.push("/crm");
+        router.push('/crm')
       } else {
         toast.error("Login failed. Please try again later.", {
           position: "top-right",
@@ -110,19 +121,19 @@ const LoginForm = () => {
         register={register}
         error={errors.password}
       />
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <Checkbox
           value={checked}
           onChange={() => setChecked(!checked)}
           label="Keep me signed in"
-        />
-        {/* <Link
+        /> */}
+      {/* <Link
           href="/forgot-password"
           className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium"
         >
           Forgot Password?
         </Link> */}
-      </div>
+      {/* </div> */}
       {
         loginError &&
         <div className="mb-4">

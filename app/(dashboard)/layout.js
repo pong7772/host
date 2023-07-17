@@ -1,29 +1,32 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { ToastContainer } from "react-toastify";
-import Header from "@/components/partials/header";
-import Sidebar from "@/components/partials/sidebar";
-import Settings from "@/components/partials/settings";
-import useWidth from "@/hooks/useWidth";
-import useSidebar from "@/hooks/useSidebar";
-import useContentWidth from "@/hooks/useContentWidth";
-import useMenulayout from "@/hooks/useMenulayout";
-import useMenuHidden from "@/hooks/useMenuHidden";
+import Loading from "@/components/Loading";
+import { reloadData } from "@/components/partials/app/profile-service/store";
 import Footer from "@/components/partials/footer";
+import MobileFooter from "@/components/partials/footer/MobileFooter";
+import Header from "@/components/partials/header";
+import Settings from "@/components/partials/settings";
+import Sidebar from "@/components/partials/sidebar";
 // import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import MobileMenu from "@/components/partials/sidebar/MobileMenu";
-import useMobileMenu from "@/hooks/useMobileMenu";
-import MobileFooter from "@/components/partials/footer/MobileFooter";
-import { useSelector } from "react-redux";
-import useRtl from "@/hooks/useRtl";
-import useDarkMode from "@/hooks/useDarkMode";
-import useSkin from "@/hooks/useSkin";
-import Loading from "@/components/Loading";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import useContentWidth from "@/hooks/useContentWidth";
+import useDarkMode from "@/hooks/useDarkMode";
+import useMenuHidden from "@/hooks/useMenuHidden";
+import useMenulayout from "@/hooks/useMenulayout";
+import useMobileMenu from "@/hooks/useMobileMenu";
 import useNavbarType from "@/hooks/useNavbarType";
+import useRtl from "@/hooks/useRtl";
+import useSidebar from "@/hooks/useSidebar";
+import useSkin from "@/hooks/useSkin";
+import useWidth from "@/hooks/useWidth";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { ToastContainer } from "react-toastify";
+
 export default function RootLayout({ children }) {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -31,18 +34,19 @@ export default function RootLayout({ children }) {
   const [isDark] = useDarkMode();
   const [skin] = useSkin();
   const [navbarType] = useNavbarType();
+  const dispatch = useDispatch();
 
   const router = useRouter();
   const { isAuth, users } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isAuth && !users) {
+    if (!isAuth) {
       router.push("/");
     }
-    // if (isAuth && users) {
-    //   router.push("/crm")
-    // }
-  }, [isAuth && users]);
+    setLoading(false);
+    dispatch(reloadData());
+  }, [isAuth, users]);
   const location = usePathname();
   // header switch class
   const switchHeaderClass = () => {

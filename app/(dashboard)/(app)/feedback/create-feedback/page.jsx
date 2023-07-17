@@ -3,7 +3,7 @@ import FormAddFeedBack from '@/components/FeedBackForm'
 function ProfilePage() {
     return (
         <Fragment>
-            <FormAddFeedBack/>
+            <FormAddFeedBack />
         </Fragment>
 
     )

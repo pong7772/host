@@ -1,20 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "@/components/ui/Dropdown";
 import Icon from "@/components/ui/Icon";
 import { Menu, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "@/components/partials/auth/store";
 import { useRouter } from "next/navigation";
-
-const getUser = () => {
-  if (typeof window === 'undefined') return undefined
-  const users = window?.localStorage?.getItem('users');
-  const user = users ? JSON.parse(users) : undefined
-  return user
-}
+import { reloadData } from "../../app/profile-service/store";
+import axios from "axios";
 const ProfileLabel = () => {
-  const user = getUser()
-  const name = user?.firstname + " " + user?.lastname;
   return (
     <div className="flex items-center">
       <div className="flex-1 ltr:mr-[10px] rtl:ml-[10px]">
@@ -27,9 +20,7 @@ const ProfileLabel = () => {
         </div>
       </div>
       <div className="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
-        <span className="overflow-hidden text-ellipsis whitespace-nowrap w-[85px] block">
-          {name ? name : "Admin"}
-        </span>
+
         <span className="text-base inline-block ltr:ml-[10px] rtl:mr-[10px]">
           <Icon icon="heroicons-outline:chevron-down"></Icon>
         </span>
@@ -40,8 +31,28 @@ const ProfileLabel = () => {
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.auth);
   const router = useRouter();
+  const { profiles } = useSelector((state) => state.profile);
+  const { users, isAuth } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(null);
+
+  // first load user profile from redux store and set it to user state
+  // then if user profile is null, load it from api and set it to user state
+
+  const fetchProfile = async () => {
+    const profile = await profiles;
+    if (profile) {
+      setUser({
+        ...profile,
+        image: profile.image ? profile.image : "/assets/images/avatars/1.jpg",
+        name: profile.firstname + " " + profile.lastname,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, [profiles]);
 
   const ProfileMenu = [
     {
@@ -68,16 +79,20 @@ const Profile = () => {
       },
     },
   ];
-  const user = getUser()
 
   return (
     <>
       {/* display role */}
-      <div className="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
-        <div className=" text-ellipsis whitespace-nowrap w-[85px] block "> Role : {user.role}</div>
-      </div>
+      {user && <div>
+        <span className="text-sm text-slate-600 dark:text-slate-300">
+          <span className=" text-ellipsis whitespace-nowrap w-[85px] block">
+            <div> {user?.firstname + " " + user?.lastname}</div>
+          </span>
+          Role : {user.role}
+        </span>
+      </div>}
 
-      <Dropdown label={ProfileLabel()} classMenuItems="w-[180px] top-[58px]">
+      <Dropdown label={ProfileLabel(user)} classMenuItems="w-[180px] top-[58px]">
         {ProfileMenu.map((item, index) => (
           <Menu.Item key={index}>
             {({ active }) => (

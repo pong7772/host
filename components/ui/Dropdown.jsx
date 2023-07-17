@@ -52,63 +52,61 @@ const Dropdown = ({
               {children
                 ? children
                 : items?.map((item, index) => (
-                    <Menu.Item key={index}>
-                      {({ active }) => (
-                        <div
-                          className={`${
-                            active
-                              ? "bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
-                              : "text-slate-600 dark:text-slate-300"
-                          } block     ${
-                            item.hasDivider
-                              ? "border-t border-slate-100 dark:border-slate-700"
-                              : ""
+                  <Menu.Item key={index}>
+                    {({ active }) => (
+                      <div
+                        className={`${active
+                          ? "bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
+                          : "text-slate-600 dark:text-slate-300"
+                          } block     ${item.hasDivider
+                            ? "border-t border-slate-100 dark:border-slate-700"
+                            : ""
                           }`}
-                        >
-                          {item.link ? (
-                            <Link
-                              href={item.link}
-                              className={`block ${classItem}`}
-                            >
-                              {item.icon ? (
-                                <div className="flex items-center">
-                                  <span className="block text-xl ltr:mr-3 rtl:ml-3">
-                                    <Icon icon={item.icon} />
-                                  </span>
-                                  <span className="block text-sm">
-                                    {item.label}
-                                  </span>
-                                </div>
-                              ) : (
+                      >
+                        {item.link ? (
+                          <Link
+                            href={item.link}
+                            className={`block ${classItem}`}
+                          >
+                            {item.icon ? (
+                              <div className="flex items-center">
+                                <span className="block text-xl ltr:mr-3 rtl:ml-3">
+                                  <Icon icon={item.icon} />
+                                </span>
                                 <span className="block text-sm">
                                   {item.label}
                                 </span>
-                              )}
-                            </Link>
-                          ) : (
-                            <div
-                              className={`block cursor-pointer ${classItem}`}
-                            >
-                              {item.icon ? (
-                                <div className="flex items-center">
-                                  <span className="block text-xl ltr:mr-3 rtl:ml-3">
-                                    <Icon icon={item.icon} />
-                                  </span>
-                                  <span className="block text-sm">
-                                    {item.label}
-                                  </span>
-                                </div>
-                              ) : (
+                              </div>
+                            ) : (
+                              <span className="block text-sm">
+                                {item.label}
+                              </span>
+                            )}
+                          </Link>
+                        ) : (
+                          <div
+                            className={`block cursor-pointer ${classItem}`}
+                          >
+                            {item.icon ? (
+                              <div className="flex items-center">
+                                <span className="block text-xl ltr:mr-3 rtl:ml-3">
+                                  <Icon icon={item.icon} />
+                                </span>
                                 <span className="block text-sm">
                                   {item.label}
                                 </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </Menu.Item>
-                  ))}
+                              </div>
+                            ) : (
+                              <span className="block text-sm">
+                                {item.label}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </Menu.Item>
+                ))}
             </div>
           </Menu.Items>
         </Transition>

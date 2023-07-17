@@ -24,6 +24,6 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/login/oldLoginPage.jsx", "app/(dashboard)/(app)/department/page.jsx", "app/(dashboard)/(app)/academic/page.jsx", "app/(dashboard)/(app)/feedback-form/page.jsx", "app/(dashboard)/(app)/feedback/page.jsx", "app/(dashboard)/(app)/feedback/create-feedback/page.jsx", "components/FeedBackForm.jsx", "components/Feedback.jsx", "components/FeedbackFilter.jsx", "components/LectureFeedBack.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/login/oldLoginPage.jsx", "app/(dashboard)/(app)/department/page.jsx", "app/layout.jsx", "app/(dashboard)/(app)/academic/page.jsx", "app/(dashboard)/(app)/result/page.jsx", "app/(dashboard)/(app)/feedback-form/page.jsx", "app/(dashboard)/(app)/feedback/create-feedback/page.jsx", "app/(dashboard)/(app)/feedback/page.jsx", "components/Feedback.jsx", "components/FeedbackFilter.jsx", "components/LectureFeedBack.jsx", "components/Icons.jsx", "components/FormComponent.jsx", "components/FeedBackForm.jsx"],
   "exclude": ["node_modules"]
 }

@@ -1,11 +1,9 @@
 import * as lucideIcons from 'lucide-react';
 import { LucideIcon, LucideProps } from 'lucide-react';
 
-export type Icon = LucideIcon;
-
 const Icons = {
 	...lucideIcons,
-	logo: (props: LucideProps) => (
+	logo: (props) => (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
 			<path
 				fill="currentColor"

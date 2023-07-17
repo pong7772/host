@@ -1,10 +1,10 @@
-import React from "react";
-import useDarkMode from "@/hooks/useDarkMode";
+"use client";
 
-import { useSelector } from "react-redux";
+import useDarkMode from "@/hooks/useDarkMode";
+import React from "react";
+
 const Loading = () => {
   const [isDark] = useDarkMode();
-
   return (
     <div className="flex flex-col items-center justify-center app_height">
       <div className="mb-3">
