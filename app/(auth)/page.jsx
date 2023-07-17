@@ -3,11 +3,21 @@ import Link from "next/link";
 import LoginForm from "@/components/partials/auth/login-form";
 import Social from "@/components/partials/auth/social";
 import useDarkMode from "@/hooks/useDarkMode";
+import { usePathname, useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 // image import
 
 const Login = () => {
+  const { users, isAuth } = useSelector((state) => state.auth);
   const [isDark] = useDarkMode();
+  const router = useRouter()
+  const location = usePathname()
+  if (location === "/") {
+    if (users && isAuth) {
+      router.push("/crm")
+    }
+  }
   return (
     <>
       <div className="loginwrapper">

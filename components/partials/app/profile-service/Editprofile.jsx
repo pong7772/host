@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import FormGroup from "@/components/ui/FormGroup";
 import Textinput from "@/components/ui/Textinput";
 import FileInput from "@/components/ui/Fileinput";
+import { fetchData } from "../service";
 const styles = {
   multiValue: (base, state) => {
     return state.data.isFixed ? { ...base, opacity: "0.5" } : base;
@@ -93,14 +94,16 @@ const EditProfile = () => {
   const { editModal, editItem } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
 
+
   const FormValidationSchema = yup
     .object({
-      name: yup.string().required("Name is required"),
+      firstname: yup.string().required("Name is required"),
+      lastname: yup.string().required("Name is required"),
       role: yup.mixed().required("role is required"),
       password: yup
         .string()
-        .min(4, "Password must be at least 6 characters")
-        .max(20, "Password shouldn't be more than 20 characters")
+        .min(3, "Password must be at least 3 characters")
+        .max(10, "Password shouldn't be more than 20 characters")
         .required("Please enter password"),
       // confirm password
       confirmpassword: yup
@@ -117,7 +120,6 @@ const EditProfile = () => {
     handleSubmit,
   } = useForm({
     resolver: yupResolver(FormValidationSchema),
-
     mode: "all",
   });
 
@@ -125,27 +127,20 @@ const EditProfile = () => {
     reset(editItem);
   }, [editItem]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    dispatch(
-      updateUserProfile({
-        id: editItem.id,
-        name: data.name,
-        role: data.role.value,
-        department: data.department.value,
-        startDate: startDate.toISOString().split("T")[0],
-        updateDate: updateDate.toISOString().split("T")[0],
-        password: data.password.value,
-        skill: data.skill,
-        batch: data.batch,
-        class: data.class,
-        phone: data.phone,
-        email: data.email,
-        image: "https://i.pravatar.cc/300",
-        course: data.course,
-        location: data.location
-      })
-    );
+    const newUser = await fetchData("/user/edit-user", {
+      id: data.id,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      role: data.role.value,
+      password: data.password,
+    }, "PUT")
+
+
+    console.log(newUser)
+
+    dispatch(updateUserProfile(newUser));
     dispatch(toggleEditModal(false));
     toast.info("Edit Successfully", {
       position: "top-right",
@@ -167,14 +162,25 @@ const EditProfile = () => {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
 
-        <FormGroup error={errors.name}>
-          <input
-            type="text"
-            defaultValue={editItem.name}
-            className="form-control py-2"
-            {...register("name")}
-          />
-        </FormGroup>
+        {/* firstname */}
+        <Textinput
+          placeholder="Enter your firstname"
+          name="firstname"
+          defaultValue={editItem.firstname}
+          register={register}
+          error={errors.firstname}
+          label="Firstname"
+        />
+        {/* lastname */}
+        <Textinput
+          placeholder="Enter your lastname"
+          name="lastname"
+          defaultValue={editItem.lastname}
+          register={register}
+          error={errors.lastname}
+          label="Lastname"
+        />
+        {/* role */}
         <div className={errors.role ? "has-error" : ""}>
           <label className="form-label" htmlFor="icon_s">
             role
@@ -207,32 +213,6 @@ const EditProfile = () => {
           )}
         </div>
 
-        <div className={errors.tags ? "has-error" : ""}>
-          <label className="form-label" htmlFor="icon_s">
-            Department
-          </label>
-          <Controller
-            name="department"
-            control={control}
-            defaultValue={editItem.department}
-            render={({ field }) => (
-              <Select
-                {...field}
-                options={options}
-                styles={styles}
-                className="react-select"
-                classNamePrefix="select"
-                // isMulti
-                id="icon_s"
-              />
-            )}
-          />
-          {errors.role && (
-            <div className=" mt-2  text-danger-500 block text-sm">
-              {errors.tags?.message || errors.tags?.label.message}
-            </div>
-          )}
-        </div>
         {/* email  */}
         <Textinput
           placeholder="Enter your email"

@@ -11,7 +11,7 @@ import AddAcademic from "@/components/partials/app/academic-service-all/AddAcade
 import EditAcademic from "@/components/partials/app/academic-service-all/EditAcademic";
 import { ToastContainer } from "react-toastify";
 import { batchToggleAddModal, courseToggleAddModal, semesterToggleAddModal } from "@/components/partials/app/academic-service-all/store";
-import rootReducer from "@/store/rootReducer";
+
 
 const AcademicPostPage = () => {
     const [filler, setFiller] = useState("course");
@@ -110,7 +110,7 @@ const AcademicPostPage = () => {
                 </div>
             )}
             <AddAcademic filler={filler} />
-            <EditAcademic filler={filler} />
+            {/* <EditAcademic filler={filler} /> */}
         </div>
     );
 };
